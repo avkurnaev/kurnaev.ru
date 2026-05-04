@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Курнаев Алексей | kurnaev.ru</title>
+    <meta name="description" content="Персональная визитка руководителя инфраструктурных проектов">
+    <meta name="theme-color" content="#040a06">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-deep: #030705;
+            --bg-card: rgba(12, 22, 16, 0.65);
+            --bg-hover: rgba(16, 185, 129, 0.06);
+            --border: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(52, 211, 153, 0.3);
+            --text-primary: #e2e8f0;
+            --text-secondary: #86efac;
+            --text-muted: #64748b;
+            --accent: #10b981;
+            --font: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: var(--font);
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            background-image: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.12) 0%, transparent 50%);
+        }
+
+        .card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-card);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem 1.5rem;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: fadeIn 0.7s ease-out;
+        }
+
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+        }
+
+        .profile { text-align: center; margin-bottom: 1.8rem; }
+        
+        .avatar-wrapper { 
+            width: 100px; 
+            height: 100px; 
+            margin: 0 auto 1rem; 
+            position: relative;
+            background: #0b140f;
+            border-radius: 50%;
+        }
+        
+        .avatar-wrapper::after {
+            content: ''; 
+            position: absolute; 
+            inset: -3px; 
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), transparent);
+            z-index: 0;
+        }
+        
+        /* Оптимизированное фото с placeholder */
+        .avatar {
+            width: 100%; 
+            height: 100%; 
+            border-radius: 50%; 
+            border: 3px solid var(--bg-deep); 
+            position: relative; 
+            z-index: 1; 
+            object-fit: cover;
+            object-position: center center;
+            display: block;
+            /* Оптимизация */
+            loading: eager;
+            decoding: async;
+            fetchpriority: high;
+            /* Плавное появление */
+            opacity: 0;
+            animation: fadeInImage 0.5s ease-in forwards;
+            animation-delay: 0.1s;
+        }
+        
+        /* Placeholder пока грузится фото */
+        .avatar-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a2f23, #0f1f17);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 2rem;
+            font-weight: 600;
+            z-index: 0;
+            border: 3px solid var(--bg-deep);
+        }
+        
+        .avatar.loaded + .avatar-placeholder {
+            display: none;
+        }
+        
+        .name {
+            font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.3rem; color: #ffffff;
+        }
+        .subtitle {
+            font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); opacity: 0.9;
+            letter-spacing: 0.02em; text-transform: uppercase;
+        }
+
+        .contact-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 2rem; }
+        .contact-item {
+            display: flex; align-items: center; gap: 14px; padding: 14px;
+            background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border);
+            border-radius: 12px; color: var(--text-primary); transition: all 0.25s ease;
+            text-decoration: none;
+        }
+        .contact-item:hover {
+            background: var(--bg-hover); border-color: var(--border-hover);
+            transform: translateX(4px);
+        }
+        .contact-item:active { transform: scale(0.98); }
+        
+        .icon {
+            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.03); border-radius: 8px; color: var(--text-secondary); flex-shrink: 0;
+        }
+        .icon svg { width: 18px; height: 18px; stroke-width: 1.5; }
+        
+        .info { display: flex; flex-direction: column; }
+        .label { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+        .value { font-size: 0.95rem; font-weight: 500; color: var(--text-primary); letter-spacing: 0.01em; }
+        
+        .contact-item:hover .value { color: var(--accent); }
+
+        .qr-section {
+            text-align: center; padding: 1.2rem; margin-top: 0.5rem;
+            background: rgba(255, 255, 255, 0.02); border: 1px dashed var(--border);
+            border-radius: 14px;
+        }
+        .qr-img {
+            width: 130px; height: 130px; border-radius: 10px; margin-bottom: 0.8rem;
+            background: #0b140f; padding: 6px; border: 1px solid var(--border);
+        }
+        .qr-btn {
+            display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 500;
+            color: var(--accent); background: rgba(16, 185, 129, 0.1); padding: 8px 16px;
+            border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2); cursor: pointer;
+            transition: all 0.2s; text-decoration: none;
+        }
+        .qr-btn:hover { background: rgba(16, 185, 129, 0.15); transform: translateY(-1px); }
+        .qr-btn svg { width: 14px; height: 14px; }
+
+        .footer { margin-top: 2rem; text-align: center; font-size: 0.7rem; color: rgba(255,255,255,0.15); letter-spacing: 0.05em; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInImage { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <main class="card">
+        <section class="profile">
+            <div class="avatar-wrapper">
+                <img src="photo.jpg" alt="Курнаев Алексей" class="avatar" width="100" height="100" onload="this.classList.add('loaded')">
+                <div class="avatar-placeholder">КА</div>
+            </div>
+            <h1 class="name">Курнаев Алексей</h1>
+            <p class="subtitle">Руководитель инфраструктурных проектов</p>
+        </section>
+
+        <nav class="contact-list">
+            <a href="tel:+79166628896" class="contact-item">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <div class="info">
+                    <span class="label">Телефон</span>
+                    <span class="value">+7 (916) 662-88-96</span>
+                </div>
+            </a>
+
+            <!-- Telegram: исправлено на @KurnaevAlexey -->
+            <a href="https://t.me/KurnaevAlexey" target="_blank" rel="noopener" class="contact-item">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </div>
+                <div class="info">
+                    <span class="label">Telegram</span>
+                    <span class="value">@KurnaevAlexey</span>
+                </div>
+            </a>
+
+            <a href="mailto:avkurnaev@gmail.com" class="contact-item">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <div class="info">
+                    <span class="label">Личная почта</span>
+                    <span class="value">avkurnaev@gmail.com</span>
+                </div>
+            </a>
+
+            <a href="mailto:kurnaevav@it.mos.ru" class="contact-item">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                </div>
+                <div class="info">
+                    <span class="label">Рабочая почта</span>
+                    <span class="value">kurnaevav@it.mos.ru</span>
+                </div>
+            </a>
+        </nav>
+
+        <section class="qr-section">
+            <!-- QR-код обновлён с новым Telegram -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=12&color=f0fdf4&bgcolor=0b140f&data=BEGIN:VCARD%0AVERSION:3.0%0AN:%D0%9A%D1%83%D1%80%D0%BD%D0%B0%D0%B5%D0%B2;%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B9;;;%0AFN:%D0%9A%D1%83%D1%80%D0%BD%D0%B0%D0%B5%D0%B2%20%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B9%0ATITLE:%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%20%D0%B8%D0%BD%D1%84%D1%80%D0%B0%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%BD%D1%8B%D1%85%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%BE%D0%B2%0ATEL;TYPE=CELL:+79166628896%0AEMAIL:avkurnaev@gmail.com%0AEMAIL;TYPE=WORK:kurnaevav@it.mos.ru%0AURL:https://kurnaev.ru%0AX-SOCIAL;TYPE=Telegram:https://t.me/KurnaevAlexey%0AEND:VCARD" alt="QR Contact" class="qr-img">
+            <br>
+            <a href="#" onclick="downloadVCard(event)" class="qr-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Сохранить контакт
+            </a>
+        </section>
+
+        <footer class="footer">
+            &copy; <span id="year"></span> kurnaev.ru
+        </footer>
+    </main>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        function downloadVCard(e) {
+            e.preventDefault();
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+N:Курнаев;Алексей;;;
+FN:Курнаев Алексей
+TITLE:Руководитель инфраструктурных проектов
+TEL;TYPE=CELL:+79166628896
+EMAIL:avkurnaev@gmail.com
+EMAIL;TYPE=WORK:kurnaevav@it.mos.ru
+URL:https://kurnaev.ru
+X-SOCIAL;TYPE=Telegram:https://t.me/KurnaevAlexey
+END:VCARD`;
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Kurnaev_Alexey.vcf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
